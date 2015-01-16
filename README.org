@@ -29,7 +29,7 @@
 
   M-x elscreen-outof-limit-mode-off turns off the mode.
 
-  M-x elscreen-outof-limit-mode-off-and-kill tunrns off the mode and kill screens more than no.9.
+  M-x elscreen-outof-limit-mode-off-and-kill turns off the mode and kill screens more than no.9.
 
 * Custom Variable
 
