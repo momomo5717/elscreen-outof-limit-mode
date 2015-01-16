@@ -136,14 +136,15 @@ No limit,if nil."
       (select-frame fr)
       (let ((s-ls (sort (elscreen-get-screen-list) '<)))
         (while (and s-ls (< (car s-ls) 10)) (pop s-ls))
-        (elscreen-set-window-configuration
-         (elscreen-get-current-screen)
-         (elscreen-current-window-configuration))
+        (when (< (elscreen-get-current-screen) 10)
+         (elscreen-set-window-configuration
+          (elscreen-get-current-screen)
+          (elscreen-current-window-configuration)))
         (dolist (s s-ls)
           (elscreen-kill-internal s))
-        (elscreen-goto-internal (car (elscreen-get-conf-list 'screen-history)))
+        (elscreen-goto-internal (elscreen-get-current-screen))
         (elscreen-notify-screen-modification 'force)
-        (run-hooks 'elscreen-goto-hook)))
+        (run-hooks 'elscreen-kill-hook)))
     (select-frame now-fr))
   (elscreen-outof-limit-mode -1))
 
