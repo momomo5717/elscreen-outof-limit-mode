@@ -27,6 +27,8 @@
 ;;   (elscreen-outof-limit-mode t)
 ;;
 ;;   You can use M-x elscreen-outof-limit-mode-off , if you want to off the mode.
+;;   You can use M-x elscreen-outof-limit-mode-off-and-kill ,
+;;   if you want to off the mode and kill screens more than no.9.
 ;;
 
 ;;; Code:
@@ -124,6 +126,25 @@ No limit,if nil."
 (defun elscreen-outof-limit-mode-off ()
   "Turn off elscreen-outof-limit-mode."
   (interactive)
+  (elscreen-outof-limit-mode -1))
+;;;###autoload
+(defun elscreen-outof-limit-mode-off-and-kill ()
+  "Tunr off elscreen-outof-limit-mode and kill screens more than no.9."
+  (interactive)  
+  (let ((now-fr (selected-frame)))
+    (dolist (fr (mapcar #'car elscreen-frame-confs))
+      (select-frame fr)
+      (let ((s-ls (sort (elscreen-get-screen-list) '<)))
+        (while (and s-ls (< (car s-ls) 10)) (pop s-ls))
+        (elscreen-set-window-configuration
+         (elscreen-get-current-screen)
+         (elscreen-current-window-configuration))
+        (dolist (s s-ls)
+          (elscreen-kill-internal s))
+        (elscreen-goto-internal (car (elscreen-get-conf-list 'screen-history)))
+        (elscreen-notify-screen-modification 'force)
+        (run-hooks 'elscreen-goto-hook)))
+    (select-frame now-fr))
   (elscreen-outof-limit-mode -1))
 
 (provide 'elscreen-outof-limit-mode)
