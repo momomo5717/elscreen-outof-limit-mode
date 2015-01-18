@@ -38,29 +38,22 @@
 (declare-function elscreen-get-screen-to-name-alist "ext:elscreen.el" ())
 (declare-function elscreen-get-conf-list "ext:elscreen.el" (type))
 
-(defun helm--elscreen-goto-candidate (candidate)
-  (elscreen-goto
-   (string-to-int (substring candidate (string-match "[0-9]+" candidate 1)))))
-
-(defun helm--elscreen-action-change-screen (candidate)
-  (helm--elscreen-goto-candidate candidate))
-
-(defun helm--elscreen-action-kill-screen (candidate)
-  (cl-dolist (i (helm-marked-candidates))
-    (helm--elscreen-goto-candidate i)
-    (elscreen-kill)))
-
-(defun helm--elscreen-action-only-screen (candidate)
-  (helm--elscreen-goto-candidate candidate)
-  (elscreen-kill-others))
-
 (setq helm-source-elscreen
       `(,(assoc 'name helm-source-elscreen)
         ,(assoc 'candidates helm-source-elscreen)
         (action
-         . (("Change Screen" .  helm--elscreen-action-change-screen)
-            ("Kill Screen(s)" . helm--elscreen-action-kill-screen)
-            ("Only Screen" .    helm--elscreen-action-only-screen)))))
+         . (("Change Screen" .
+             (lambda (candidate)
+               (elscreen-goto (string-to-number (substring candidate 1)))))
+            ("Kill Screen(s)" .
+             (lambda (candidate)
+               (cl-dolist (i (helm-marked-candidates))
+                 (elscreen-goto (string-to-number (substring i 1)))
+                 (elscreen-kill))))
+            ("Only Screen" .
+             (lambda (candidate)
+               (elscreen-goto (string-to-number (substring candidate 1)))
+               (elscreen-kill-others)))))))
 
 (defvar helm-source-elscreen-history
   `((name . "Elscreen History")
