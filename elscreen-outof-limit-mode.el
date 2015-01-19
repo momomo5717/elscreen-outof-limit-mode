@@ -3,7 +3,7 @@
 ;; Copyright (C) 2015 momomo5717
 
 ;; Keywords: elscreen
-;; Version: 0.1.0
+;; Version: 0.2.4
 ;; Package-Requires: ((elscreen "20140421.414"))
 ;; URL: https://github.com/momomo5717/elscreen-outof-limit-mode
 
