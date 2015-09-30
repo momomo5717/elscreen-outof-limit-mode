@@ -1,96 +1,74 @@
-#+title:elscreen-outof-limit-mode
-#+OPTIONS: author:nil timestamp:nil  num:nil creator:nil
-
-* What is it ?
+* elscreen-outof-limit-mode
 
   elscreen-outof-limit-mode overrides elscreen-create-internal and elscreen-split to create any number of screens.
 
-  This was tested on Emacs 24.4.1 (emacs-mac-app 5.2_0)
-
-* Requirements
+** Requirements
 
   elscreen.el : https://github.com/emacs-jp/elscreen
 
-  You can also install from ELPA, El-Get or other package systems.
+  You can also install from MELPA, El-Get.
 
-* Installation
-  
-  git clone https://github.com/momomo5717/elscreen-outof-limit-mode.git
+  This was tested on Emacs 24.4.1 (emacs-mac-app 5.2_0)
 
-* Setup
+** Setup
 
   #+BEGIN_SRC emacs-lisp
 
     (add-to-list 'load-path "/path/to/elscreen-outof-limit-mode")
     (require 'elscreen-outof-limit-mode)
     (elscreen-outof-limit-mode t)
-      
+
   #+END_SRC
 
   M-x elscreen-outof-limit-mode-off turns off the mode.
 
   M-x elscreen-outof-limit-mode-off-and-kill turns off the mode and kills screens more than no.9.
 
-* Custom Variable
+** Custom Variable
 
-** elscreen-screen-limit-number
+*** elscreen-screen-limit-number
 
    Type : nil or integer
-   
+
    Default : nil
-   
+
    If it is nil, it can create any number of screens.
 
-* Option
+** Option
 
-** For Helm User
+*** elscreen-renumber-create.el
 
-   helm-elscree-outof-limit.el overrides helm-elscreen to adapt this mode.
+**** Requirements : cl-lib.el, elscreen.el
 
-   helm-elscreen-history is similar to helm-elscreen but the order sorted by elscreen history.
+**** Setup
 
-*** Setup
-
-   #+BEGIN_SRC emacs-lisp
-     (requrie 'helm-elscree-outof-limit)
-     ;; example key bindings
-     (define-key elscreen-map (kbd "h") 'helm-elscreen)
-     (define-key elscreen-map (kbd "H") 'helm-elscreen-history)
-   #+END_SRC
-
-** elscreen-renumber-create.el
-
-*** Requirements : cl-lib.el, elscreen.el
-
-*** Setup
-    
     #+BEGIN_SRC emacs-lisp
 
       (require 'elscreen-renumber-create)
       ;; example key bindings
       (define-key elscreen-map (kbd "t") 'elscreen-renumber-create)
       (define-key elscreen-map (kbd "T") 'elscreen-renumber-create-right)
-                
+
     #+END_SRC
-    
-*** elscreen-renumber : Renumber elscreen from 0 to n
+
+**** elscreen-renumber : Renumber elscreen from 0 to n
 
     It works like the following.
 
-    =|2 aaa |4 bbb |6 ccc |7 ddd |...= 
-    
-    ->  =|0 aaa |1 bbb |2 ccc |3 ddd |...= 
+    =|2 aaa |4 bbb |6 ccc |7 ddd |...=
 
-*** elscreen-renumber-create : create a screen to the right edge
+    ->  =|0 aaa |1 bbb |2 ccc |3 ddd |...=
 
-    =|1 aaa |3 bbb |6 ccc |7 ddd |...= 
+**** elscreen-renumber-create : create a screen to the right edge
 
-    -> =|0 aaa |1 bbb |2 ccc |3 ddd |... |n new screen |= 
-    
-*** elscreen-renumber-create-right : create screen to the right side of the current screen
+    =|1 aaa |3 bbb |6 ccc |7 ddd |...=
+
+    -> =|0 aaa |1 bbb |2 ccc |3 ddd |... |n new screen |=
+
+**** elscreen-renumber-create-right : create screen to the right side of the current screen
 
     If the current screen is 3, it works like the following.
 
-    =|1 aaa |3 bbb |6 ccc |7 ddd |...= 
+    =|1 aaa |3 bbb |6 ccc |7 ddd |...=
 
     -> =|0 aaa |1 bbb |2 new screen |3 ccc |4 ddd |...=
